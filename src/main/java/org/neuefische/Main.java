@@ -1,17 +1,29 @@
 package org.neuefische;
 
+import java.util.ArrayList;
+import java.util.UUID;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+    Customer john=new Customer("john doe","amArschderHeide 5 mustermanStadt musterland 44466");
+    Product RedBull=new Product(UUID.randomUUID(),"RedBull",1.50);
+    Product BlueBull=new Product(UUID.randomUUID(),"BlueBull",1.50);
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+    ArrayList<String>productStrings=new ArrayList<>();
+    productStrings.add("RedBull");
+    productStrings.add("BlueBull");
+    OrderRepo orderRepo=new OrderListRepo();
+    ProductRepo productRepo=new ProductRepo();
+    productRepo.add(BlueBull);
+    productRepo.add(RedBull);
+    ShopService shopService=new ShopService(productRepo,orderRepo);
+    String createOrder=shopService.CreateOrder(productStrings,john);
+    System.out.println(createOrder);
+
+    //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
+        // to see how IntelliJ IDEA suggests fixing it.
+
     }
 }

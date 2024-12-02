@@ -7,6 +7,13 @@ import java.util.UUID;
 
 public class ProductRepo
 {
+    public ProductRepo(){
+        products = new ArrayList<>();
+    }
+    public ProductRepo(List<Product> products) {
+        this.products = products;
+    }
+
     private List<Product> products;
 
     public List<Product> getProducts() {

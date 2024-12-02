@@ -5,7 +5,16 @@ import java.util.List;
 import java.util.UUID;
 
 public class ShopService {
-    ProductRepo productRepo = new ProductRepo();
+    ProductRepo productRepo ;
+    OrderRepo orderRepo;
+    public ShopService() {
+        orderRepo=new OrderListRepo();
+        productRepo = new ProductRepo();
+    }
+    public ShopService(ProductRepo productRepo, OrderRepo orderRepo) {
+        this.productRepo = productRepo;
+        this.orderRepo = orderRepo;
+    }
     public String CreateOrder(List<String> products,Customer customer) {
        Order order;
         if(products.isEmpty()) {
@@ -29,7 +38,7 @@ public class ShopService {
         return order.toString()+" successfully created";
     }
     public  Product productExists(String productName) {
-        productName = productName.toLowerCase();
+
         return productRepo.getProductByName(productName);
     }
 }
