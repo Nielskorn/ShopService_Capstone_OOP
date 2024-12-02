@@ -20,7 +20,7 @@ public class ShopService {
         if(products.isEmpty()) {
            return "Error: No products found";
        }
-       List<Product> productList = new ArrayList<Product>();
+       List<Product> productList = new ArrayList<>();
        for(String product : products) {
        Product product1= productExists(product);
        if(product1 != null) {
@@ -35,7 +35,7 @@ public class ShopService {
 
 
         // Order order=new Order(UUID.randomUUID(),products,customer);
-        return order.toString()+" successfully created";
+        return order+" successfully created";
     }
     public  Product productExists(String productName) {
 

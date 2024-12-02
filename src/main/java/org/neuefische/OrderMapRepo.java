@@ -1,14 +1,16 @@
 package org.neuefische;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
+
 
 public class OrderMapRepo  implements OrderRepo {
-    private Map<Integer,Order> orders;
+    private final Map<Integer,Order> orders;
     static  Integer orderNr = 0;
+
+    public OrderMapRepo() {
+      orders = new HashMap<Integer,Order>();
+    }
+
     @Override
     public void add(Order order) {
         orders.put(orderNr++, order);
