@@ -1,8 +1,6 @@
 package org.neuefische;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class ShopService {
     ProductRepo productRepo ;
@@ -15,30 +13,40 @@ public class ShopService {
         this.productRepo = productRepo;
         this.orderRepo = orderRepo;
     }
-    public String CreateOrder(List<String> products,Customer customer) {
+    public Order CreateOrder(Map<String, Integer>products , Customer customer) {
        Order order;
         if(products.isEmpty()) {
-           return "Error: No products found";
+           throw  new IllegalArgumentException("No products given");
        }
-       List<Product> productList = new ArrayList<>();
-       for(String product : products) {
+       Map<Product,Integer> productMap = new HashMap<>();
+       for(String product : products.keySet()) {
        Product product1= productExists(product);
        if(product1 != null) {
-           productList.add(product1);
+           productMap.put(product1,products.get(product));
+           System.out.println(products.get(product));
+           product1.withQuatity(product1.quantity()-products.get(product));
        }
        else {
            throw new IllegalArgumentException("Product " + product + " not found");
        }
 
        }
-       order=new Order(UUID.randomUUID(),productList,customer);
-
+       order=new Order(UUID.randomUUID(),productMap,customer);
+        orderRepo.add(order);
 
         // Order order=new Order(UUID.randomUUID(),products,customer);
-        return order+" successfully created";
+        return order;
     }
+
+
     public  Product productExists(String productName) {
 
         return productRepo.getProductByName(productName);
+    }
+    public Order findOrder(UUID id){
+          return orderRepo.findById(id);
+    }
+    public double getTotalOrder(Order order){
+      return   orderRepo.total(order);
     }
 }

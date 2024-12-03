@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.UUID;
 
 public class OrderListRepo implements OrderRepo{
+    public OrderListRepo(){
+        orders = new ArrayList<>();
+    }
     private List<Order> orders;
     public List<Order> getAllOrders(){
         return orders;
@@ -32,6 +35,17 @@ public class OrderListRepo implements OrderRepo{
         //return orders.stream().findFirst().orElse(null);
         throw  new IllegalArgumentException("Order not found");
     }
+
+    @Override
+    public double total(Order order) {
+        double total = 0;
+        for(Product product : order.products().keySet()){
+            total += product.price()*order.products().get(product);
+        } ;
+        return total;
+    }
+
+
     public List<Order> getAllOrdersOfCustomer(Customer customer){
         List<Order> customerOrders = new ArrayList<Order>();
         for(Order order : orders){
@@ -49,7 +63,16 @@ public class OrderListRepo implements OrderRepo{
     public List<Order> findAll() {
         return orders;
     }
+    public double getTotal(Order order){
+        double total = 0;
+        for(Product product : order.products().keySet()){
+            total += product.price();
+            }
+        return total;
+        }
+
+
+    }
 
 
 
-}

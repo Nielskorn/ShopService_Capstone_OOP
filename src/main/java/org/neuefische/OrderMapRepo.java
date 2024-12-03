@@ -39,4 +39,13 @@ public class OrderMapRepo  implements OrderRepo {
         }
         throw  new IllegalArgumentException("Order not found");
     }
+
+    @Override
+    public double total(Order order) {
+        double total = 0.0;
+        for (Product product:order.products().keySet()) {
+            total += product.price();
+        }
+        return total;
+    }
 }

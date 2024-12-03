@@ -8,5 +8,7 @@ public interface OrderRepo {
     void remove(Order order);
     List<Order> findAll();
     Order findById(UUID id);
+    double total(Order order);
+
 
 }
