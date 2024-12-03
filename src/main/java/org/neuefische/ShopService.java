@@ -24,7 +24,12 @@ public class ShopService {
        if(product1 != null) {
            productMap.put(product1,products.get(product));
            System.out.println(products.get(product));
-           product1.withQuatity(product1.quantity()-products.get(product));
+           productRepo.remove(product1);
+           productRepo.remove(product1);
+           product1=product1.withQuatity(product1.quantity()-products.get(product));
+
+           productRepo.add(product1);
+           productMap.put(product1,products.get(product));
        }
        else {
            throw new IllegalArgumentException("Product " + product + " not found");
@@ -33,6 +38,7 @@ public class ShopService {
        }
        order=new Order(UUID.randomUUID(),productMap,customer);
         orderRepo.add(order);
+
 
         // Order order=new Order(UUID.randomUUID(),products,customer);
         return order;
