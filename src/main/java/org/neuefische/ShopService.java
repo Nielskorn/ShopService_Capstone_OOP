@@ -5,13 +5,16 @@ import java.util.*;
 public class ShopService {
     ProductRepo productRepo ;
     OrderRepo orderRepo;
+    EanProductRepo eanProductRepo;
     public ShopService() {
         orderRepo=new OrderListRepo();
         productRepo = new ProductRepo();
+        eanProductRepo = new EanProductRepo();
     }
-    public ShopService(ProductRepo productRepo, OrderRepo orderRepo) {
+    public ShopService(ProductRepo productRepo, OrderRepo orderRepo, EanProductRepo eanProductRepo) {
         this.productRepo = productRepo;
         this.orderRepo = orderRepo;
+        this.eanProductRepo = eanProductRepo;
     }
     public Order CreateOrder(Map<String, Integer>products , Customer customer) {
        Order order;
@@ -26,7 +29,7 @@ public class ShopService {
            System.out.println(products.get(product));
            productRepo.remove(product1);
            productRepo.remove(product1);
-           product1=product1.withQuatity(product1.quantity()-products.get(product));
+           product1=product1.withQuantity(product1.quantity()-products.get(product));
 
            productRepo.add(product1);
            productMap.put(product1,products.get(product));
@@ -54,5 +57,11 @@ public class ShopService {
     }
     public double getTotalOrder(Order order){
       return   orderRepo.total(order);
+    }
+    public void importEanProduct() {
+      List<Product> products= eanProductRepo.getEanProductsAsProducts();
+      for(Product product:products) {
+          productRepo.add(product);
+      }
     }
 }

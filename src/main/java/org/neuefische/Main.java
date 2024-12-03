@@ -1,19 +1,32 @@
 package org.neuefische;
 
+import com.opencsv.CSVReader;
+import com.opencsv.bean.CsvToBeanBuilder;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
-   // Customer john=new Customer("john doe","amArschderHeide 5 mustermanStadt musterland 44466");
-    Product RedBull=new Product(UUID.randomUUID(),"RedBull",1.50,500);
-    Product BlueBull=new Product(UUID.randomUUID(),"BlueBull",1.50,250);
-    OrderRepo orderRepo=new OrderListRepo();
+    public static void main(String[] args) throws IOException {
+        // Customer john=new Customer("john doe","amArschderHeide 5 mustermanStadt musterland 44466");
+        Product RedBull=new Product(UUID.randomUUID().toString(),"RedBull",1.50,500);
+        Product BlueBull=new Product(UUID.randomUUID().toString(),"BlueBull",1.50,250);
+        OrderRepo orderRepo=new OrderListRepo();
         ProductRepo productRepo=new ProductRepo();
         productRepo.add(BlueBull);
         productRepo.add(RedBull);
-        ShopService shopService=new ShopService(productRepo,orderRepo);
+        String filename="src/main/resources/mock_ean_datenbank_no_category.csv";
+        List<EanProduct>eanProducts=new CsvToBeanBuilder(new FileReader(filename))
+                .withType(EanProduct.class)
+                .build().parse();
+
+        EanProductRepo eanProductRepo=new EanProductRepo(eanProducts);
+        ShopService shopService=new ShopService(productRepo,orderRepo,eanProductRepo);
+        shopService.importEanProduct();
 //    Map<String,Integer> productStrings=new HashMap<>();
 //    productStrings.put("RedBull",1);
 //    productStrings.put("BlueBull",5);
@@ -49,7 +62,8 @@ public class Main {
             }else {
                 System.out.println("please enter the quantity of the product");
                Integer productquantiy= sc.nextInt();
-               sc.reset();
+               //consum /N
+               sc.nextLine();
                productStrings.put(productName,productquantiy);
             }
         }
